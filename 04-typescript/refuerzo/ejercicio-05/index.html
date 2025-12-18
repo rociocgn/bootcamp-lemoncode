@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <h1>DÍA SIN IVA</h1>
+    <p>Calcula el precio base y tu ahorro a partir del precio total (21% IVA incluido)</p>
+    <div class="calculadora">
+      <label for="precioTotal">Precio total (con IVA): </label>
+      <input type="number" id="precioTotal" placeholder="Ejemplo: 121.00" /><span>€</span>
+
+      <label for="tipoIVA">Tipo de IVA a aplicar:</label>
+      <select id="tipoIVA">
+        <option value="">--Seleccione una opción--</option>
+        <option value="0.21">21% (IVA estándar)</option>
+        <option value="0.10">10% (IVA reducido)</option>
+        <option value="0.04">4% (IVA superreducido)</option>
+      </select>
+
+      <button id="botonCalculo">Calcular Ahorro</button>
+
+      <!--Salida de datos-->
+      <div id="resultados" class="hidden">
+        <p>Precio base (sin IVA): <span id="precioBase">0.00</span></p>
+        <p>Ahorro (% IVA): <span id="ahorroIVA">0.00</span></p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
