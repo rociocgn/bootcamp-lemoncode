@@ -11,6 +11,6 @@ Ejemplos vistos en las grabaciones del Modulo 5 - Sandbox de JavaScript
 - Ternarios
 - Pistas
 
-Y ahora también.
+Y ahora también:
 - Máxio de intentos
 - Game Over
