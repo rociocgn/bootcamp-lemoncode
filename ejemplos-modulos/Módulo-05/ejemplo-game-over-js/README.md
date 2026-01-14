@@ -12,5 +12,5 @@ Ejemplos vistos en las grabaciones del Modulo 5 - Sandbox de JavaScript
 - Pistas
 
 Y ahora también:
-- Máxio de intentos
+- Máximo de intentos
 - Game Over
