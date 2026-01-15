@@ -21,8 +21,6 @@ if (elementoIntentos) {
 
 document.addEventListener('DOMContentLoaded', actualizarIntentosRestantes);
 
-console.error("No se encontró el elemento con id 'comprobar'");
-
 const gestionarGameOver = (estado: Estado) => {
   if(estado === "GAME_OVER_MAXIMO_INTENTOS"){
     const elementoComprobar = document.getElementById("comprobar");
@@ -86,28 +84,22 @@ if (hasSuperadoMaximoIntentos()) {
     : "EL_NUMERO_ES_MENOR";
   };
 
-const handleCompruebaClick = () => {
-    let texto : string = '';
-    const inputElement = document.getElementById("comprobar");
-if (inputElement && inputElement instanceof HTMLInputElement) {
-    texto = inputElement.value;
-} else {
-    console.error("No se encontró el elemento con id 'comprobar' o no es un campo de entrada");
-    return;
-}
-    const estado : Estado = comprobarNumero(texto);
-    muestraMensajeComprobacion(texto, estado);
-    intentos++;
-    actualizarIntentosRestantes();   
-    gestionarGameOver(estado);
-
-};
 
 const botonComprobar = document.getElementById('comprobar');
-botonComprobar?.addEventListener('click', handleCompruebaClick);
-/* También podríamos haber optado por poner un if 
-y lanzar un error en caso de que no se encontrara el botón
-
-if (!botonComprobar) {
-    console.error("No se encontró el elemento con id 'comprobar'");
-}*/
+    if (botonComprobar && botonComprobar instanceof HTMLButtonElement) {
+    botonComprobar?.addEventListener('click', () => {
+        const elementoInput = document.getElementById("numero");
+        if (elementoInput && elementoInput instanceof HTMLInputElement) {
+            const texto: string = elementoInput.value;
+            const estado: Estado = comprobarNumero(texto);
+            muestraMensajeComprobacion(texto, estado);
+            intentos++;
+            actualizarIntentosRestantes();
+            gestionarGameOver(estado);
+        } else {
+            console.error("No se encontró el elemento con id 'numero' o no es un campo de entrada");
+        }
+    });
+} else {
+    console.error("No se encontró el elemento con id 'comprobar' o no es un botón");
+}
