@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
+    <div id="juego">
+      <h1>Juego de las siete y media</h1>
+
+      <div id="mesa"> 
+          <img
+        id="carta"
+        src="https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg" />
+     
+      </div> 
+      <div id="info">
+        <p>Puntuación: <span id="puntuacion"></span></p>
+        <p id = "mensaje"> </p>
+      </div>
+      
+      <div id="acciones">
+        <button id="dame-carta">Dame carta</button>
+        <button id="plantarse">Plantarse</button>
+        <button id="nueva-partida">Nueva partida</button>
+        <button id="que-habria-pasado">¿Qué habría pasado?</button>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
