@@ -88,7 +88,7 @@ const mostrarPuntuacion = () => {
 
 const mostrarMensaje = (texto: string) => {
   const mensaje = document.getElementById("mensaje");
-  if (mensaje && mensaje instanceof HTMLDivElement) {
+  if (mensaje && mensaje instanceof HTMLParagraphElement) {
     mensaje.textContent = texto;
   }
 };
@@ -116,7 +116,7 @@ const obtenerMensajePlantarse = (puntuacion: number): string => {
 const finalizarPartida = () => {
     const btnDameCarta = document.getElementById("dame-carta");
     if (btnDameCarta && btnDameCarta instanceof HTMLButtonElement) {
-        btnDameCarta.setAttribute("disabled", "true");
+        btnDameCarta.disabled = true;
     }
 };
 
@@ -171,11 +171,6 @@ if (btnDameCarta !== null && btnDameCarta !== undefined && btnDameCarta instance
 }
 
 
-const estadoInicial = (): void => {
-  actualizarPuntuacion(0);
-  mostrarPuntuacion();
-}
-
 const imagenInicial = (): void => {
   const img = document.getElementById("carta");
   if (img !== null && img !== undefined && img instanceof HTMLImageElement) {
@@ -185,19 +180,20 @@ const imagenInicial = (): void => {
 
 const mensajeInicial = (): void => {
   const mensaje = document.getElementById("mensaje");
-    if (mensaje !== null && mensaje !== undefined && mensaje instanceof HTMLDivElement) {
+    if (mensaje !== null && mensaje !== undefined && mensaje instanceof HTMLParagraphElement) {
         mensaje.textContent = "";
     }
 }
 
 const iniciarNuevaPartida = (): void => {
-  estadoInicial();
+  actualizarPuntuacion(0);
+  mostrarPuntuacion();
   imagenInicial();
   mensajeInicial();
 
  const btnDameCarta = document.getElementById("dame-carta");
     if (btnDameCarta !== null && btnDameCarta !== undefined && btnDameCarta instanceof HTMLButtonElement) {
-        btnDameCarta.removeAttribute("disabled");
+        btnDameCarta.disabled = false;
     }
 };
 
@@ -220,13 +216,14 @@ const obtenerMensajeSimulacion = (puntuacion : number, puntosCarta: number): str
 const gestionarSimulacion = (): void => {
     const numero = generarNumeroAleatorio();
     const carta = generarNumeroCarta(numero);
+    const puntosCarta = obtenerPuntosCarta(carta);
     const urlCarta = obtenerUrlCarta(carta);
     mostrarUrlCarta(urlCarta);
-    const puntosCarta = obtenerPuntosCarta(carta);
-    const puntosSumados = sumarPuntos(puntosCarta);
-    actualizarPuntuacion(puntosSumados);
-    mostrarPuntuacion();
-    mostrarMensaje(obtenerMensajeSimulacion(puntuacion, puntosCarta));
+    
+    
+    
+    const mensaje = obtenerMensajeSimulacion(puntuacion, puntosCarta);
+    mostrarMensaje(mensaje);
 };
 
 const botonQueHabriaPasado = document.getElementById("que-habria-pasado");
