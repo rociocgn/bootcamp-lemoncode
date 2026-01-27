@@ -86,10 +86,9 @@ const mostrarPuntuacion = () => {
 }
 
 
-let juegoTerminado: boolean = false;
 const mostrarMensaje = (texto: string) => {
   const mensaje = document.getElementById("mensaje");
-  if (mensaje) {
+  if (mensaje && mensaje instanceof HTMLDivElement) {
     mensaje.textContent = texto;
   }
 };
@@ -115,9 +114,8 @@ const obtenerMensajePlantarse = (puntuacion: number): string => {
 };
 
 const finalizarPartida = () => {
-    juegoTerminado = true;
     const btnDameCarta = document.getElementById("dame-carta");
-    if (btnDameCarta) {
+    if (btnDameCarta && btnDameCarta instanceof HTMLButtonElement) {
         btnDameCarta.setAttribute("disabled", "true");
     }
 };
@@ -128,8 +126,6 @@ const gestionarGameOver = (): void => {
 };
 
 const gestionarPlantarse = (): void => {
-  if (juegoTerminado) return;
-
   finalizarPartida();
 
   const mensaje = obtenerMensajePlantarse(puntuacion);
@@ -144,7 +140,7 @@ if (btnPlantarse !== null && btnPlantarse !== undefined && btnPlantarse instance
 
 const comprobarPartida = () => {
     if (puntuacion === 7.5) {
-        console.log('Hemos ganado la partida');
+        obtenerMensajePlantarse(puntuacion);
     }
 
     if (puntuacion > 7.5) {
@@ -176,8 +172,7 @@ if (btnDameCarta !== null && btnDameCarta !== undefined && btnDameCarta instance
 
 
 const estadoInicial = (): void => {
-  puntuacion = 0;
-  juegoTerminado = false;
+  actualizarPuntuacion(0);
   mostrarPuntuacion();
 }
 
@@ -214,60 +209,24 @@ if (btnNuevaPartida !== null && btnNuevaPartida !== undefined && btnNuevaPartida
 }
 
 // Apartado Adicional "¿Qué habría pasado si...?"
-const obtenerCartaAleatoria = (): number => {
-  const numeroAleatorio = generarNumeroAleatorio();
-  return generarNumeroCarta(numeroAleatorio);
+const obtenerMensajeSimulacion = (puntuacion : number, puntosCarta: number): string => {
+    if (puntuacion + puntosCarta > 7.5) {
+        return `Si hubieras seguido jugando, habrías perdido con una puntuación de ${puntuacion + puntosCarta}`;
+    }
+    return `Si hubieras seguido jugando, habrías tenido una puntuación de ${puntuacion + puntosCarta}`;
 };
 
- 
-const simularResultadoPartida = () => {
-  let puntuacionSimulada = puntuacion;
-  let ultimaCarta = 0;
-
-
-  while (puntuacionSimulada <= 7.5) {
-    ultimaCarta = obtenerCartaAleatoria();
-    puntuacionSimulada += obtenerPuntosCarta(ultimaCarta);
-  }
-
-  return {
-    puntuacionFinal: puntuacionSimulada,
-    ultimaCarta: ultimaCarta,
-  };
-};
-
-const obtenerMensajeSimulacion = (puntuacionFinal: number,ultimaCarta: number): string => {
-  if (puntuacionFinal > 7.5) {
-    return `Si hubieras seguido jugando, habrías sacado una última carta de ${ultimaCarta} y habrías perdido la partida.`;
-  }
-
-  return `Si hubieras seguido jugando, tu puntuación final habría sido ${puntuacionFinal.toFixed(1)}.`;
-};
-
-const mostrarMensajeSimulacion = (texto: string): void => {
-  const mensaje = document.getElementById("mensaje");
-  if (mensaje) {
-    mensaje.textContent = texto;
-  }
-};
-
-const mostrarCartaSimulacion = (numeroCarta: number): void => {
-  const url = obtenerUrlCarta(numeroCarta);
-  mostrarUrlCarta(url);
-};
 
 const gestionarSimulacion = (): void => {
-  if (!juegoTerminado) return;
-
-  const resultado = simularResultadoPartida();
-
-  const mensaje = obtenerMensajeSimulacion(
-    resultado.puntuacionFinal,
-    resultado.ultimaCarta
-  );
-
-  mostrarCartaSimulacion(resultado.ultimaCarta);
-  mostrarMensajeSimulacion(mensaje);
+    const numero = generarNumeroAleatorio();
+    const carta = generarNumeroCarta(numero);
+    const urlCarta = obtenerUrlCarta(carta);
+    mostrarUrlCarta(urlCarta);
+    const puntosCarta = obtenerPuntosCarta(carta);
+    const puntosSumados = sumarPuntos(puntosCarta);
+    actualizarPuntuacion(puntosSumados);
+    mostrarPuntuacion();
+    mostrarMensaje(obtenerMensajeSimulacion(puntuacion, puntosCarta));
 };
 
 const botonQueHabriaPasado = document.getElementById("que-habria-pasado");
