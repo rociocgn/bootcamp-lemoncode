@@ -40,41 +40,45 @@ const obtenerUrlCarta = (numeroCarta: number): string => {
 }; 
 
 const generarNumeroAleatorio = () => { 
-    return Math.floor(Math.random() * 10) + 1; } 
+    return Math.floor(Math.random() * 10) + 1; 
+}; 
     
 const generarNumeroCarta = (numeroAlea: number) => { 
     if (numeroAlea > 7) { 
         return numeroAlea + 2; 
-    } return numeroAlea; } 
+    } 
+    return numeroAlea; 
+}; 
 
     
 const mostrarUrlCarta = (url: string) => { 
         const elementoImagen = document.getElementById('carta'); 
         if (elementoImagen !== null && elementoImagen !== undefined && elementoImagen instanceof HTMLImageElement) { 
-            elementoImagen.src = url; } 
+            elementoImagen.src = url; 
         } 
+    }; 
             
 
 const obtenerPuntosCarta = (numeroCarta: number) => { 
     if (numeroCarta > 7) { 
         return 0.5; 
     } return numeroCarta; 
-} 
+}; 
 
 const sumarPuntos = (puntos: number) => { 
     return puntos + puntuacion; 
-} 
+}; 
 
 const actualizarPuntuacion = (nuevosPuntos: number) => { 
     puntuacion = nuevosPuntos; 
-} 
+}; 
 
 const mostrarPuntuacion = () => { 
     const elementoPuntuacion = document.getElementById('puntuacion'); 
     if (elementoPuntuacion !== null && elementoPuntuacion !== undefined && elementoPuntuacion instanceof HTMLSpanElement) { 
         elementoPuntuacion.textContent = `${puntuacion}`; 
     } 
-} 
+}; 
 
 const mostrarMensaje = (texto: string) => { 
     const mensaje = document.getElementById("mensaje"); 
@@ -84,13 +88,13 @@ const mostrarMensaje = (texto: string) => {
     }; 
     
 const obtenerMensajePlantarse = (puntuacion: number): string => { 
-    if (puntuacion < 4) { 
+    if (puntuacion <= 4) { 
         return "Has sido muy conservador"; 
     } 
-    if (puntuacion === 5) { 
+    if (puntuacion === 4.5 || puntuacion === 5 || puntuacion === 5.5) { 
         return "Te ha entrado el canguelo eh?"; 
     } 
-    if (puntuacion === 6 || puntuacion === 7) { 
+    if (puntuacion === 6 || puntuacion === 6.5 || puntuacion === 7) { 
         return "Casi, casi..."; 
     } 
     if (puntuacion === 7.5) { 
@@ -113,7 +117,8 @@ const gestionarGameOver = (): void => {
 }; 
 
 const gestionarPlantarse = (): void => { 
-    finalizarPartida(); 
+    finalizarPartida();
+
     const mensaje = obtenerMensajePlantarse(puntuacion);
     mostrarMensaje(mensaje); 
 }; 
@@ -121,15 +126,16 @@ const gestionarPlantarse = (): void => {
 const btnPlantarse = document.getElementById("plantarse"); 
 if (btnPlantarse !== null && btnPlantarse !== undefined && btnPlantarse instanceof HTMLButtonElement) { 
     btnPlantarse.addEventListener("click", gestionarPlantarse); 
-} 
+};
 
 const comprobarPartida = () => { 
     if (puntuacion === 7.5) { 
         obtenerMensajePlantarse(puntuacion); 
     } 
-    if (puntuacion > 7.5) { gestionarGameOver(); 
+    if (puntuacion > 7.5) { 
+        gestionarGameOver(); 
     } 
-} 
+}; 
 
 const dameCarta = () => { 
     const numeroAleatorio = generarNumeroAleatorio(); 
@@ -139,14 +145,17 @@ const dameCarta = () => {
     const puntosCarta = obtenerPuntosCarta(carta); 
     const puntosSumados = sumarPuntos(puntosCarta); 
     actualizarPuntuacion(puntosSumados); 
-    mostrarPuntuacion(); comprobarPartida(); 
-} 
+    mostrarPuntuacion(); 
+    comprobarPartida(); 
+}; 
 
 const btnDameCarta = document.getElementById('dame-carta'); 
 if (btnDameCarta !== null && btnDameCarta !== undefined && btnDameCarta instanceof HTMLButtonElement) { 
     btnDameCarta.addEventListener('click', dameCarta); 
-} else { console.log('Error!!!'); 
-    } 
+} else { 
+    console.log('Error!!!'); 
+    };
+
 
 const imagenInicial = (): void => { 
     const img = document.getElementById("carta"); 
@@ -160,7 +169,7 @@ const mensajeInicial = (): void => {
     if (mensaje !== null && mensaje !== undefined && mensaje instanceof HTMLParagraphElement) { 
         mensaje.textContent = ""; 
     } 
-} 
+}; 
 
 const iniciarNuevaPartida = (): void => { 
     actualizarPuntuacion(0); 
@@ -168,10 +177,10 @@ const iniciarNuevaPartida = (): void => {
     imagenInicial(); 
     mensajeInicial(); 
     
-const btnDameCarta = document.getElementById("dame-carta"); 
-if (btnDameCarta !== null && btnDameCarta !== undefined && btnDameCarta instanceof HTMLButtonElement) { 
-    btnDameCarta.disabled = false; 
-} 
+    const btnDameCarta = document.getElementById("dame-carta"); 
+        if (btnDameCarta !== null && btnDameCarta !== undefined && btnDameCarta instanceof HTMLButtonElement) { 
+        btnDameCarta.disabled = false; 
+    } 
 }; 
 
 document.addEventListener("DOMContentLoaded", iniciarNuevaPartida); 
@@ -179,7 +188,7 @@ document.addEventListener("DOMContentLoaded", iniciarNuevaPartida);
 const btnNuevaPartida = document.getElementById("nueva-partida"); 
 if (btnNuevaPartida !== null && btnNuevaPartida !== undefined && btnNuevaPartida instanceof HTMLButtonElement) { 
     btnNuevaPartida.addEventListener("click", iniciarNuevaPartida);
-} 
+}; 
 
 // Apartado Adicional "¿Qué habría pasado si...?" 
 
@@ -194,8 +203,10 @@ const gestionarSimulacion = (): void => {
     const numero = generarNumeroAleatorio(); 
     const carta = generarNumeroCarta(numero); 
     const puntosCarta = obtenerPuntosCarta(carta); 
+    
     const urlCarta = obtenerUrlCarta(carta); 
     mostrarUrlCarta(urlCarta); 
+    
     const mensaje = obtenerMensajeSimulacion(puntuacion, puntosCarta); 
     mostrarMensaje(mensaje); 
 }; 
@@ -203,4 +214,4 @@ const gestionarSimulacion = (): void => {
 const botonQueHabriaPasado = document.getElementById("que-habria-pasado"); 
 if (botonQueHabriaPasado !== null && botonQueHabriaPasado !== undefined && botonQueHabriaPasado instanceof HTMLButtonElement) { 
     botonQueHabriaPasado.addEventListener("click", gestionarSimulacion);
-}
+};
