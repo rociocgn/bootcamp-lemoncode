@@ -10,33 +10,33 @@
     obtenerMensajeSimulacion
     } from "./motor";
 
-export const mostrarPuntuacion = () => { 
+const mostrarPuntuacion = () => { 
     const elementoPuntuacion = document.getElementById('puntuacion'); 
     if (elementoPuntuacion !== null && elementoPuntuacion !== undefined && elementoPuntuacion instanceof HTMLSpanElement) { 
         elementoPuntuacion.textContent = `${partida.puntuacion}`; 
     } 
 }; 
 
-export const mostrarMensaje = (texto: string) => { 
+const mostrarMensaje = (texto: string) => { 
     const mensaje = document.getElementById("mensaje"); 
     if (mensaje && mensaje instanceof HTMLParagraphElement) {
          mensaje.textContent = texto; 
         } 
     }; 
 
-export const finalizarPartida = () => { 
+const finalizarPartida = () => { 
     const btnDameCarta = document.getElementById("dame-carta"); 
     if (btnDameCarta && btnDameCarta instanceof HTMLButtonElement) { 
         btnDameCarta.disabled = true; 
     } 
 }; 
 
-export const gestionarGameOver = (): void => { 
+const gestionarGameOver = (): void => { 
     mostrarMensaje("¡Game Over!"); 
     finalizarPartida(); 
 }; 
 
-export const gestionarPlantarse = (): void => { 
+const gestionarPlantarse = (): void => { 
     finalizarPartida();
 
     const mensaje = obtenerMensajePlantarse();
@@ -48,7 +48,7 @@ if (btnPlantarse !== null && btnPlantarse !== undefined && btnPlantarse instance
     btnPlantarse.addEventListener("click", gestionarPlantarse); 
 };
 
-export const comprobarPartida = () => { 
+const comprobarPartida = () => { 
     if (partida.puntuacion === 7.5) { 
         obtenerMensajePlantarse(); 
     } 
@@ -77,14 +77,14 @@ if (btnDameCarta !== null && btnDameCarta !== undefined && btnDameCarta instance
     };
 
 
-export const imagenInicial = (): void => { 
+const imagenInicial = (): void => { 
     const img = document.getElementById("carta"); 
     if (img !== null && img !== undefined && img instanceof HTMLImageElement) { 
         img.src = "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg"; 
     } 
 }; 
 
-export const mensajeInicial = (): void => { 
+const mensajeInicial = (): void => { 
     const mensaje = document.getElementById("mensaje"); 
     if (mensaje !== null && mensaje !== undefined && mensaje instanceof HTMLParagraphElement) { 
         mensaje.textContent = ""; 
