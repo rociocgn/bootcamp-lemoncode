@@ -69,17 +69,17 @@ export const sumarPuntos = (puntos: number) => {
     return puntos + partida.puntuacion; 
 }; 
 
-export const obtenerMensajePlantarse = (puntuacion: number): string => { 
-    if (puntuacion <= 4) { 
+export const obtenerMensajePlantarse = () => { 
+    if (partida.puntuacion <= 4) { 
         return "Has sido muy conservador"; 
     } 
-    if (puntuacion === 4.5 || puntuacion === 5 || puntuacion === 5.5) { 
+    if (partida.puntuacion === 4.5 || partida.puntuacion === 5 || partida.puntuacion === 5.5) { 
         return "Te ha entrado el canguelo eh?"; 
     } 
-    if (puntuacion === 6 || puntuacion === 6.5 || puntuacion === 7) { 
+    if (partida.puntuacion === 6 || partida.puntuacion === 6.5 || partida.puntuacion === 7) { 
         return "Casi, casi..."; 
     } 
-    if (puntuacion === 7.5) { 
+    if (partida.puntuacion === 7.5) { 
         return "¡Lo has clavado! ¡Enhorabuena!"; 
     } 
 

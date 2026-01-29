@@ -39,7 +39,7 @@ export const gestionarGameOver = (): void => {
 export const gestionarPlantarse = (): void => { 
     finalizarPartida();
 
-    const mensaje = obtenerMensajePlantarse(partida.puntuacion);
+    const mensaje = obtenerMensajePlantarse();
     mostrarMensaje(mensaje); 
 }; 
 
@@ -50,7 +50,7 @@ if (btnPlantarse !== null && btnPlantarse !== undefined && btnPlantarse instance
 
 export const comprobarPartida = () => { 
     if (partida.puntuacion === 7.5) { 
-        obtenerMensajePlantarse(partida.puntuacion); 
+        obtenerMensajePlantarse(); 
     } 
     if (partida.puntuacion > 7.5) { 
         gestionarGameOver(); 
