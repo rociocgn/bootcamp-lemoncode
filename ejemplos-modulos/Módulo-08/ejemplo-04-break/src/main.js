@@ -36,3 +36,11 @@ const sonLosGastosDeEnvioGratis = () => {
 };
 
 console.log(sonLosGastosDeEnvioGratis());
+
+const gratis = sonLosGastosDeEnvioGratis
+
+if (gratis) {
+  console.log("¡Enhorabuena! Tienes gastos de envío gratis.");
+} else {
+  console.log("Los gastos de envío son 5.99€.");
+}
