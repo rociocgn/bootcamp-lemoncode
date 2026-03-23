@@ -1,4 +1,4 @@
-# typescript-sandbox
+# javascript-sandbox
 
 Para la parte de cada módulo en la que te planteamos ejercicios con JavaScript puedes usar este sandbox.
 

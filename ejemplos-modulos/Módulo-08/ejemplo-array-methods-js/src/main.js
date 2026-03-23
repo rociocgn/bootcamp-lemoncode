@@ -146,3 +146,5 @@ console.log(hayReservasSuperioresNoCompletadasConExito);
 En este caso, queremos imprimir por consola el id de cada reserva.*/
 
 reservas.forEach((reserva) => console.log(reserva.id));
+ 
+
