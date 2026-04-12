@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juego de parejas</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Juego de parejas</h1>
+
+      <div id="stats">
+        <div class="stat">Intentos: <span id="intentos">0</span></div>
+        <div class="stat">Parejas: <span id="parejas">0</span> / 6</div>
+      </div>
+
+      <button id="btn-iniciar">Iniciar partida</button>
+
+      <div id="tablero"></div>
+
+      <div id="mensaje">Pulsa "Iniciar partida" para comenzar.</div>
+
+      <div id="ganaste">
+        ¡Enhorabuena! Completaste el juego en
+        <strong><span id="total-intentos"></span> intentos</strong>.
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

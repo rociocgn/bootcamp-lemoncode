@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>POC 4 - Dos cartas y comprobar pareja</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  
+  <body>
+    <h1>POC 4 — Dos cartas: ¿son pareja?</h1>
+
+    <div id="contenedor">
+      <!-- Carta A -->
+      <div class="carta" id="carta-0" data-indice="0">
+        <div class="carta-inner">
+          <div class="cara cara-atras">?</div>
+          <div class="cara cara-frente">
+          <img data-indice-imagen="${idx}" src="https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/refs/heads/main/memo/6.png" alt="Abeja" />
+        </div>
+      </div>
+        </div>
+      </div>
+
+      <!-- Carta B: cambia el enlace para probar pareja / no pareja -->
+      <div class="carta" id="carta-1" data-indice="1">
+        <div class="carta-inner">
+          <div class="cara cara-atras">?</div>
+          <div class="cara cara-frente">
+            <img data-indice-imagen="${idx}" src="https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/refs/heads/main/memo/6.png" alt="Abeja" />
+          </div>
+        </div>
+    </div>
+
+    <div id="mensaje">Haz clic en la primera carta.</div>
+
+    <script>
+      const cartas = document.querySelectorAll(".carta");
+      const mensaje = document.getElementById("mensaje");
+
+      // Contenido de cada carta (simula el array del modelo)
+      const contenido = [
+        "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/refs/heads/main/memo/1.png", 
+        "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/refs/heads/main/memo/1.png"
+      ]; // Cambia el segundo para probar no-pareja
+
+      let primeraCartaIdx = null;
+      let bloqueado = false;
+
+      cartas.forEach((carta, idx) => {
+        carta.addEventListener("click", () => {
+          if (bloqueado) return;
+          if (carta.classList.contains("volteada")) return;
+          if (carta.classList.contains("encontrada")) return;
+
+          carta.classList.add("volteada");
+
+          if (primeraCartaIdx === null) {
+            // Primera carta
+            primeraCartaIdx = idx;
+            mensaje.textContent = "Ahora elige la segunda carta.";
+          } else {
+            // Segunda carta: comprobamos
+            bloqueado = true;
+            const idxA = primeraCartaIdx;
+            const idxB = idx;
+
+            if (contenido[idxA] === contenido[idxB]) {
+              // Pareja encontrada
+              cartas[idxA].classList.add("encontrada");
+              cartas[idxB].classList.add("encontrada");
+              mensaje.textContent = "¡Pareja encontrada!";
+              primeraCartaIdx = null;
+              bloqueado = false;
+            } else {
+              // No son pareja: esperamos 1 segundo y las volvemos boca abajo
+              mensaje.textContent = "No coinciden…";
+              setTimeout(() => {
+                cartas[idxA].classList.remove("volteada");
+                cartas[idxB].classList.remove("volteada");
+                primeraCartaIdx = null;
+                bloqueado = false;
+                mensaje.textContent = "Inténtalo de nuevo.";
+              }, 1000);
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

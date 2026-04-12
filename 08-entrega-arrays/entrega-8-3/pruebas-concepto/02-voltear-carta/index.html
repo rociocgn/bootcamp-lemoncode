@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>POC 2 - Voltear una carta</title>
+    <link rel="stylesheet" href="style.css" /> 
+  </head>
+  <body>
+    <h1>POC 2 — Voltear una carta</h1>
+
+    <div class="carta" id="carta">
+      <div class="carta-inner">
+        <div class="cara cara-atras">?</div>
+         <div class="cara cara-frente">
+          <img src="https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/refs/heads/main/memo/1.png" alt="León" />
+        </div>
+      </div>
+    </div>
+
+    <p>Haz clic en la carta para voltearla.</p>
+
+    <script>
+      const carta = document.getElementById("carta");
+
+      carta.addEventListener("click", () => {
+        carta.classList.toggle("volteada");
+      });
+    </script>
+  </body>
+</html>

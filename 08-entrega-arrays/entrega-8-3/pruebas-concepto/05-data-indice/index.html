@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>POC 5 - data-indice-array</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <h1>POC 5 — Mapear div ↔ posición del array</h1>
+
+    <div id="tablero"></div>
+
+    <div id="log">Haz clic en una carta.</div>
+
+    <script>
+          // ── Modelo mínimo ──────────────────────────────────────────────────────
+      const infoCartas = [
+        { idFoto: 0, imagen: "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/refs/heads/main/memo/4.png" },
+        { idFoto: 1, imagen: "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/refs/heads/main/memo/5.png" },
+        { idFoto: 2, imagen: "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/refs/heads/main/memo/6.png" },
+      ];
+
+      // Duplicamos para tener 2 de cada tipo
+      const arrayCartas = [...infoCartas, ...infoCartas];
+
+      // ── Render ──────────────────────────────────────────────────────────────
+      const tablero = document.getElementById("tablero");
+      const log = document.getElementById("log");
+
+      arrayCartas.forEach((carta, idx) => {
+        const div = document.createElement("div");
+        div.className = "carta";
+
+        // data-indice-array: mapea el div con su posición en el array
+        div.dataset.indiceArray = String(idx);
+
+        div.innerHTML = `
+          <div class="carta-inner">
+            <div class="cara cara-atras">
+              ?
+              <span class="indice-label">pos ${idx}</span>
+            </div>
+            <div class="cara cara-frente">
+                <img data-indice-imagen="${idx}" src="https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/refs/heads/main/memo/2.png" alt="Búho" />
+            </div>
+              <span class="indice-label">idFoto ${carta.idFoto}</span>
+            </div>
+          </div>`;
+          
+
+        div.addEventListener("click", () => {
+          // Leemos el índice del array desde el atributo data
+          const indice = Number(div.dataset.indiceArray);
+          const cartaDelArray = arrayCartas[indice];
+
+          div.classList.toggle("volteada");
+
+          log.innerHTML =
+            `Clic en div con <span>data-indice-array="${indice}"</span> → ` +
+            `carta del array: idFoto=<span>${cartaDelArray.idFoto}</span>, ` +
+            `imagen=<span>${cartaDelArray.imagen}</span>`;
+        });
+
+        tablero.appendChild(div);
+      });
+    </script>
+  </body>
+</html>
