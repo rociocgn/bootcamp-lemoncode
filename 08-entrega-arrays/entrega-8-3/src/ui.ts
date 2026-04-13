@@ -15,115 +15,140 @@ import {
 let tablero: Tablero = crearTableroInicial();
 let intentos = 0;
 let parejasEncontradas = 0;
-let bloqueado = false;          // evita clicks mientras se ejecuta el timeout
+let bloqueado = false;
 
 // ─── Referencias al DOM ───────────────────────────────────────────────────────
 
-const contenedorTablero = document.getElementById(
-  "tablero"
-) as HTMLDivElement;
-const btnIniciar = document.getElementById(
-  "btn-iniciar"
-) as HTMLButtonElement;
-const spanIntentos = document.getElementById("intentos") as HTMLSpanElement;
-const spanParejas = document.getElementById("parejas") as HTMLSpanElement;
-const divMensaje = document.getElementById("mensaje") as HTMLDivElement;
-const divGanaste = document.getElementById("ganaste") as HTMLDivElement;
-const spanTotalIntentos = document.getElementById(
-  "total-intentos"
-) as HTMLSpanElement;
+const contenedorTablero = document.getElementById("tablero");
+const btnIniciar = document.getElementById("btn-iniciar");
+const spanIntentos = document.getElementById("intentos");
+const spanParejas = document.getElementById("parejas");
+const divMensaje = document.getElementById("mensaje");
+const divGanaste = document.getElementById("ganaste");
+const spanTotalIntentos = document.getElementById("total-intentos");
 
 // ─── Render ───────────────────────────────────────────────────────────────────
 
+const crearHTMLCarta = (idx: number): string => `
+  <div class="carta-inner">
+    <div class="cara cara-atras"></div>
+    <div class="cara cara-frente">
+      <img data-indice-imagen="${idx}"
+           src="${tablero.cartas[idx].imagen}"
+           alt="carta ${tablero.cartas[idx].idFoto}" />
+    </div>
+  </div>
+`;
+
+const crearDivCarta = (idx: number): HTMLDivElement => {
+  const carta = tablero.cartas[idx];
+  const divCarta = document.createElement("div");
+
+  divCarta.className =
+    "carta" +
+    (carta.estaVuelta || carta.encontrada ? " volteada" : "") +
+    (carta.encontrada ? " encontrada" : "");
+
+  divCarta.dataset.indiceArray = String(idx);
+  divCarta.innerHTML = crearHTMLCarta(idx);
+  divCarta.addEventListener("click", () => manejarClick(idx));
+
+  return divCarta;
+};
+
 const renderizarTablero = (): void => {
+  if (!(contenedorTablero instanceof HTMLDivElement)) return;
+
   contenedorTablero.innerHTML = "";
-
-  tablero.cartas.forEach((carta, idx) => {
-    const divCarta = document.createElement("div");
-    divCarta.className =
-      "carta" +
-      (carta.estaVuelta || carta.encontrada ? " volteada" : "") +
-      (carta.encontrada ? " encontrada" : "");
-
-    // data attributes para mapear div <-> posición del array
-    divCarta.dataset.indiceArray = String(idx);
-
-    divCarta.innerHTML = `
-      <div class="carta-inner">
-        <div class="cara cara-atras"></div>
-        <div class="cara cara-frente">
-        <img data-indice-imagen="${idx}" src="${carta.imagen}" alt="carta ${carta.idFoto}" />
-        </div>
-      </div>
-    `;
-
-    divCarta.addEventListener("click", () => manejarClick(idx));
-    contenedorTablero.appendChild(divCarta);
+  tablero.cartas.forEach((_, idx) => {
+    contenedorTablero.appendChild(crearDivCarta(idx));
   });
 
-  spanIntentos.textContent = String(intentos);
-  spanParejas.textContent = String(parejasEncontradas);
+  if (spanIntentos instanceof HTMLSpanElement)
+    spanIntentos.textContent = String(intentos);
+  if (spanParejas instanceof HTMLSpanElement)
+    spanParejas.textContent = String(parejasEncontradas);
+};
+
+// ─── Lógica de pareja ─────────────────────────────────────────────────────────
+
+const comprobarPareja = (indiceCartaA: number, indiceCartaB: number): void => {
+  intentos++;
+
+  if (sonPareja(indiceCartaA, indiceCartaB, tablero)) {
+    parejaEncontrada(tablero, indiceCartaA, indiceCartaB);
+    parejasEncontradas++;
+    renderizarTablero();
+
+    if (tablero.estadoPartida === "PartidaCompleta") {
+      if (divMensaje instanceof HTMLDivElement)
+        divMensaje.textContent = "";
+      if (divGanaste instanceof HTMLDivElement)
+        divGanaste.style.display = "block";
+      if (spanTotalIntentos instanceof HTMLSpanElement)
+        spanTotalIntentos.textContent = String(intentos);
+    } else {
+      if (divMensaje instanceof HTMLDivElement)
+        divMensaje.textContent = "¡Pareja encontrada! Elige otra carta.";
+    }
+  } else {
+    bloqueado = true;
+    if (divMensaje instanceof HTMLDivElement)
+      divMensaje.textContent = "No coinciden. Volviendo boca abajo…";
+
+    setTimeout(() => {
+      parejaNoEncontrada(tablero, indiceCartaA, indiceCartaB);
+      bloqueado = false;
+      renderizarTablero();
+      if (divMensaje instanceof HTMLDivElement)
+        divMensaje.textContent = "Elige una carta.";
+    }, 1000);
+  }
 };
 
 // ─── Lógica de click ──────────────────────────────────────────────────────────
 
 const manejarClick = (indice: number): void => {
   if (bloqueado) return;
-  if (!sePuedeVoltearLaCarta(tablero, indice)) return;
 
-  voltearLaCarta(tablero, indice);  // solo una vez
-  renderizarTablero();
-
-  if (tablero.estadoPartida === "UnaCartaLevantada") {
-    divMensaje.textContent = "Ahora elige la segunda carta.";
-    return;
-  }
-
-  // Si llegamos aquí estamos en DosCartasLevantadas
-  const a = tablero.indiceCartaVolteadaA;
-  const b = tablero.indiceCartaVolteadaB;
-
-  if (a === undefined || b === undefined) return;
-
-  intentos++;
-
-  if (sonPareja(a, b, tablero)) {
-    parejaEncontrada(tablero, a, b);
-    parejasEncontradas++;
+  if (sePuedeVoltearLaCarta(tablero, indice)) {
+    voltearLaCarta(tablero, indice);
     renderizarTablero();
 
-    if (tablero.estadoPartida === "PartidaCompleta") {
-      divMensaje.textContent = "";
-      divGanaste.style.display = "block";
-      spanTotalIntentos.textContent = String(intentos);
-    } else {
-      divMensaje.textContent = "¡Pareja encontrada! Elige otra carta.";
+    if (tablero.estadoPartida === "UnaCartaLevantada") {
+      if (divMensaje instanceof HTMLDivElement)
+        divMensaje.textContent = "Ahora elige la segunda carta.";
+      return;
+    }
+
+    const indiceCartaA = tablero.indiceCartaVolteadaA;
+    const indiceCartaB = tablero.indiceCartaVolteadaB;
+
+    if (indiceCartaA !== undefined && indiceCartaB !== undefined) {
+      comprobarPareja(indiceCartaA, indiceCartaB);
     }
   } else {
-    bloqueado = true;
-    divMensaje.textContent = "No coinciden. Volviendo boca abajo…";
-
-    setTimeout(() => {
-      parejaNoEncontrada(tablero, a, b);
-      bloqueado = false;
-      renderizarTablero();
-      divMensaje.textContent = "Elige una carta.";
-    }, 1000);
+    if (divMensaje instanceof HTMLDivElement)
+      divMensaje.textContent = "Esta carta no se puede voltear.";
   }
 };
 
 // ─── Iniciar partida ──────────────────────────────────────────────────────────
 
-btnIniciar.addEventListener("click", () => {
-  tablero = crearTableroInicial();
-  iniciaPartida(tablero);
-  intentos = 0;
-  parejasEncontradas = 0;
-  bloqueado = false;
-  divGanaste.style.display = "none";
-  divMensaje.textContent = "Elige una carta.";
-  renderizarTablero();
-});
+if (btnIniciar instanceof HTMLButtonElement) {
+  btnIniciar.addEventListener("click", () => {
+    tablero = crearTableroInicial();
+    iniciaPartida(tablero);
+    intentos = 0;
+    parejasEncontradas = 0;
+    bloqueado = false;
+    if (divGanaste instanceof HTMLDivElement)
+      divGanaste.style.display = "none";
+    if (divMensaje instanceof HTMLDivElement)
+      divMensaje.textContent = "Elige una carta.";
+    renderizarTablero();
+  });
+}
 
 // ─── Arranque inicial ─────────────────────────────────────────────────────────
 
