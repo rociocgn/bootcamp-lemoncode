@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agencia de Información Filatélica - Personajes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__badge">T.I.A.</div>
+    <div class="header__title-block">
+      <h1 class="header__title">Mortadelo &amp; Filemón</h1>
+      <p class="header__subtitle">Archivo Secreto de Personajes · Clasificado</p>
+    </div>
+    <div class="header__badge">T.I.A.</div>
+  </header>
+
+  <main class="main">
+
+    <section class="search-section">
+      <div class="search-box">
+        <label class="search-box__label" for="searchInput">
+          🔎 Buscar personaje por nombre
+        </label>
+        <div class="search-box__controls">
+          <input
+            type="text"
+            id="searchInput"
+            class="search-box__input"
+            placeholder="Ej: mortadelo, bacterio, mortadela..."
+            autocomplete="off"
+          />
+          <button id="searchBtn" class="search-box__btn">¡FILTRAR!</button>
+          <button id="resetBtn" class="search-box__btn search-box__btn--reset">Ver todos</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <p id="resultsCount" class="results-count"></p>
+      <div id="personajesContainer" class="cards-grid"></div>
+      <div id="loadingMsg" class="loading-msg">
+        <span class="loading-spinner"></span> Cargando expedientes secretos…
+      </div>
+      <div id="errorMsg" class="error-msg hidden"></div>
+      <div id="emptyMsg" class="empty-msg hidden">
+        ¡Ni rastro! No se encontraron personajes con ese nombre.
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© T.I.A. · Todos los derechos reservados · Francisco Ibáñez</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
