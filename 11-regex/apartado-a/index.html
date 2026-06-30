@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Validador de IBAN español</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <h1>Validador de IBAN español</h1>
+
+  <form id="formulario-iban">
+    <label for="campo-iban">Introduce un IBAN (con o sin espacios/guiones):</label>
+    <input
+      type="text"
+      id="campo-iban"
+      placeholder="ES21 1465 0100 72 2030876293"
+      required
+    />
+    <button type="submit">Validar</button>
+  </form>
+
+  <div id="resultado"></div>
+
+  <script type="module" src="./dist/ui.js"></script>
+</body>
+</html>
